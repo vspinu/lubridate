@@ -40,6 +40,8 @@ picoseconds(x = 1)
 \arguments{
 \item{x}{numeric value of the number of units to be contained in the
 period. With the exception of seconds(), x must be an integer.}
+
+\item{abbreviate}{Ignored. For consistency with S3 generic in base namespace.}
 }
 \value{
 a period object
@@ -94,7 +96,7 @@ boundary <- as.POSIXct("2009-03-08 01:59:59")
 # "2009-03-08 01:59:59 CST"
 boundary + days(1) # period
 # "2009-03-09 01:59:59 CDT" (clock time advances by a day)
-boundary + edays(1) # duration
+boundary + ddays(1) # duration
 # "2009-03-09 02:59:59 CDT" (clock time corresponding to 86400
 # seconds later)
 }
