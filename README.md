@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/hadley/lubridate.png?branch=master)](https://travis-ci.org/hadley/lubridate)
+[![Build Status](https://travis-ci.org/vspinu/lubridate.png?branch=master)](https://travis-ci.org/vspinu/lubridate)
 
 # lubridate 
 
