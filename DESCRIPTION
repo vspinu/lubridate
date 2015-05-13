@@ -1,8 +1,6 @@
 Package: lubridate
 Imports:
-    plyr,
-    stringr,
-    memoise
+    stringr
 Maintainer: Garrett Grolemund <garrett@rstudio.com>
 License: GPL
 Title: Make dealing with dates a little easier
@@ -24,7 +22,7 @@ Description: Lubridate makes it easier to work with dates
     dates fun instead of frustrating.
 Enhances: chron, timeDate, zoo, xts, its, tis, timeSeries,
     fts, tseries
-Version: 1.4.0.9000
+Version: 1.4.0.9500
 Depends:
     methods,
     R (>= 3.0.0)
@@ -38,6 +36,8 @@ Collate:
     'POSIXt.r'
     'util.r'
     'timespans.r'
+    'intervals.r'
+    'difftimes.r'
     'durations.r'
     'periods.r'
     'accessors-day.r'
@@ -53,8 +53,6 @@ Collate:
     'am-pm.r'
     'time-zones.r'
     'numeric.r'
-    'intervals.r'
-    'difftimes.r'
     'coercion.r'
     'constants.r'
     'data.r'

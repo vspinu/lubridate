@@ -70,7 +70,7 @@
 #'
 #' Instants can be rounded to a convenient unit using the 
 #' functions \code{\link{ceiling_date}}, \code{\link{floor_date}} 
-#' and\code{\link{round_date}}.
+#' and \code{\link{round_date}}.
 #'
 #' Time zones
 #' 
@@ -163,7 +163,8 @@
 #' @references Garrett Grolemund, Hadley Wickham (2011). Dates and Times Made
 #'   Easy with lubridate. Journal of Statistical Software, 40(3), 1-25. 
 #'   \url{http://www.jstatsoft.org/v40/i03/}.
-#' @import plyr stringr
+#' @import stringr
+#' @importFrom methods setClass setGeneric new show
 #' @docType package
 #' @name lubridate
 #' @aliases lubridate lubridate-package

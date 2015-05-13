@@ -7,9 +7,7 @@ test_that("addition handles daylight savings time", {
   expect_that(x + days(1), equals(as.POSIXct(
     "2010-03-15 00:00:00", tz = "America/New_York")))
   expect_that(x + ddays(1), equals(y))  
-    
 })  
-
 
 test_that("subtraction handles daylight savings time", {
   x <- as.POSIXct("2010-03-15 00:00:00", tz = "America/New_York")
@@ -18,10 +16,7 @@ test_that("subtraction handles daylight savings time", {
   expect_that(x - days(1), equals(as.POSIXct(
     "2010-03-14 00:00:00", tz = "America/New_York")))
   expect_that(x - ddays(1), equals(y))  
-    
 })  
-
-
 
 test_that("addition works as expected for instants",{
 
@@ -33,9 +28,9 @@ test_that("addition works as expected for instants",{
   expect_equal(y + years(1), as.POSIXlt("2009-01-01 00:00:00", tz = "UTC"))
   expect_equal(z + years(1), as.Date("2009-01-01"))
   
-  expect_that(x + eyears(1), equals(as.POSIXct("2008-12-31 00:00:00", tz = "UTC")))
-  expect_that(y + eyears(1), equals(as.POSIXlt("2008-12-31 00:00:00", tz = "UTC")))
-  expect_that(z + eyears(1), equals(as.Date("2008-12-31")))
+  expect_that(x + dyears(1), equals(as.POSIXct("2008-12-31 00:00:00", tz = "UTC")))
+  expect_that(y + dyears(1), equals(as.POSIXlt("2008-12-31 00:00:00", tz = "UTC")))
+  expect_that(z + dyears(1), equals(as.Date("2008-12-31")))
   
   time1 <- as.POSIXct("2008-08-02 13:01:59", tz = "UTC") 
   time2 <- as.POSIXct("2009-08-03 13:01:59", tz = "UTC")
@@ -45,7 +40,6 @@ test_that("addition works as expected for instants",{
   expect_error(x + int)
   expect_error(y + int)
   expect_error(z + int)
-  
 })
 
 test_that("addition with instants returns correct class",{
@@ -57,9 +51,9 @@ test_that("addition with instants returns correct class",{
   expect_is(y + years(1), "POSIXlt")
   expect_is(z + years(1), "Date")
   
-  expect_that(x + eyears(1), is_a("POSIXct"))
-  expect_that(y + eyears(1), is_a("POSIXlt"))
-  expect_that(z + eyears(1), is_a("Date"))
+  expect_that(x + dyears(1), is_a("POSIXct"))
+  expect_that(y + dyears(1), is_a("POSIXlt"))
+  expect_that(z + dyears(1), is_a("Date"))
 })
 
 
@@ -80,9 +74,8 @@ test_that("addition works as expected for periods",{
   expect_that(years(1) + minutes(3),equals(new_period(minutes = 3, 
     years = 1)))
   
-  expect_error(years(1) + eyears(1)) 
+  expect_error(years(1) + dyears(1)) 
   expect_error(years(1) + int)
-
 })
 
 test_that("addition with periods returns correct class",{
@@ -111,7 +104,6 @@ test_that("addition works as expected for durations",{
   expect_equal(dyears(1) + dyears(1), dyears(2))
   expect_error(dyears(1) + minutes(3))
   expect_error(dyears(1) + int)    
-
 })
 
 test_that("addition with durations returns correct class",{
@@ -122,11 +114,7 @@ test_that("addition with durations returns correct class",{
   expect_that(dyears(1) + ct, is_a("POSIXct"))
   expect_that(dyears(1) + lt, is_a("POSIXlt"))
   expect_that(dyears(1) + dyears(1), is_a("Duration"))  
-  
 })
-
-
-
 
 test_that("addition works as expected for intervals",{
   time1 <- as.POSIXct("2008-08-03 13:01:59", tz = "UTC") 
@@ -140,18 +128,16 @@ test_that("addition works as expected for intervals",{
   expect_error(int + time1)
   expect_error(int + 1)
   expect_error(int + minutes(3))
-  expect_error(int + eyears(1))
+  expect_error(int + dyears(1))
     
   time5 <- as.POSIXct("2010-08-03 00:00:00", tz = "UTC")    
   int3 <- interval(time2, time5)
 
   expect_error(int + int3)  
-
 })
 
-
+
 #### Vectors
-
 
 test_that("adding vectors works as expected for instants",{
   x <- as.POSIXct(c("2008-01-01 00:00:00", "2009-01-01 00:00:00"),
@@ -169,13 +155,13 @@ test_that("adding vectors works as expected for instants",{
   expect_that(z + years(1), equals(as.Date(c("2009-01-01", 
     "2009-01-10"))))
   
-  expect_that(x + eyears(1), equals(as.POSIXct(c(
+  expect_that(x + dyears(1), equals(as.POSIXct(c(
     "2008-12-31 00:00:00", "2010-01-01 00:00:00"), tz = 
     "UTC")))
-  expect_that(y + eyears(1), equals(as.POSIXlt(c(
+  expect_that(y + dyears(1), equals(as.POSIXlt(c(
     "2008-12-31 00:00:00", "2010-01-01 00:00:00"), 
     tz = "UTC")))
-  expect_that(z + eyears(1), equals(as.Date(c("2008-12-31", 
+  expect_that(z + dyears(1), equals(as.Date(c("2008-12-31", 
     "2009-01-09"))))
   
   time1 <- as.POSIXct("2008-08-03 13:01:59", tz = "UTC") 
@@ -186,7 +172,6 @@ test_that("adding vectors works as expected for instants",{
   expect_error(x + int)
   expect_error(y + int)
   expect_error(z + int)
-
 })
 
 test_that("adding vectors works as expected for periods",{
@@ -206,17 +191,14 @@ test_that("adding vectors works as expected for periods",{
   expect_that(years(1:2) + minutes(3), equals(new_period(
     minutes = 3, years = c(1, 2))))
   
-  expect_error(years(1:2) + eyears(1))
+  expect_error(years(1:2) + dyears(1))
     
   time1 <- as.POSIXct("2008-01-02 00:00:00", tz = "UTC")
   time2 <- as.POSIXct("2009-08-03 00:00:00", tz = "UTC")
   int <- new_interval(time1, time2)
 
   expect_error(years(1:2) + int)
-
 })
-
-
 
 test_that("adding vectors works as expected for durations",{
   w <- as.POSIXct("2007-01-01 00:00:00", tz = "UTC") 
@@ -228,16 +210,15 @@ test_that("adding vectors works as expected for durations",{
   expect_equal(dyears(1:2) + w, y)
   expect_that(dyears(1:2) + as.POSIXlt(w), equals(as.POSIXlt(y)))
   expect_error(dyears(1:2) + minutes(3))  
-  expect_that(dyears(1:2) + dyears(1), equals(eyears(2:3)))
+  expect_that(dyears(1:2) + dyears(1), equals(dyears(2:3)))
     
   time1 <- as.POSIXct("2008-01-02 00:00:00", tz = "UTC")
   time2 <- as.POSIXct("2009-08-03 00:00:00", tz = "UTC")
   int <- new_interval(time1, time2)
     
-  expect_error(eyears(1:2) + int)
+  expect_error(dyears(1:2) + int)
 
 })
-
 
 test_that("adding vectors works as expected for intervals",{
   time1 <- as.POSIXct("2008-08-03 00:00:00", tz = "UTC")
@@ -249,11 +230,10 @@ test_that("adding vectors works as expected for intervals",{
   expect_error(int + time4)
   expect_error(int + 1)
   expect_error(int + minutes(3))
-  expect_error(int + eyears(1))
+  expect_error(int + dyears(1))
   expect_error(int + int2)
     
 })
-
 
 test_that("%m+% correctly adds months without rollover",{
   jan <- ymd_hms("2010-01-31 03:04:05")
@@ -269,6 +249,22 @@ test_that("%m+% correctly adds years without rollover",{
   
   expect_equal(leap %m+% years(1), next1)
   expect_equal(leap %m+% new_period(years = 1, months = 1), next2)
+})
+
+test_that("%m+% correctly adds years, months, days and HMS (#286)",{
+  date <- ymd("2012-02-29")
+  per_all <- new_period(years = 1, months = 1, days = 2, hours = 1, minutes = 20, seconds = 30)
+  per_major <- new_period(years = 1, months = 1)
+  per_minor <- new_period(days = 2, hours = 1, minutes = 20, seconds = 30)
+  expect_equal(date %m+% per_all,
+               date %m+% per_major + per_minor)
+
+  date <- ymd("2012-03-31")
+  per_all <- new_period(months = 3, days = 30, hours = 1, minutes = 20, seconds = 30)
+  per_major <- new_period(months = 3)
+  per_minor <- new_period(days = 30, hours = 1, minutes = 20, seconds = 30)
+  expect_equal(date %m+% per_all,
+               date %m+% per_major + per_minor)
 })
 
 test_that("%m+% correctly adds negative months without rollover",{

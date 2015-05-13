@@ -49,7 +49,6 @@
 ##' stamp("2013-01-01T06:00:00Z")(D)
 ##' stamp("2013-01-01T00:00:00-06")(D)
 ##' stamp("2013-01-01T00:00:00-08:00")(force_tz(D, "America/Chicago"))
-
 stamp <- function(x, orders = lubridate_formats,
                   locale = Sys.getlocale("LC_TIME"), quiet = FALSE){
 
@@ -149,7 +148,7 @@ stamp <- function(x, orders = lubridate_formats,
   offset_duration = as.duration(dtm_utc - x)
 
   ## determine sign
-  .sgn <- ifelse(offset_duration >= 0, "+", "-")
+  .sgn <- ifelse(offset_duration >= as.duration(0), "+", "-")
 
   ## remove sign
   offset_duration <- abs(offset_duration)

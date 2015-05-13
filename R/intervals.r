@@ -167,6 +167,12 @@ setMethod("$<-", signature(x = "Interval"), function(x, name, value) {
 	x
 })
 
+#' @export
+unique.Interval <- function(x, ...){
+  df <- unique.data.frame(data.frame(data = x@.Data, start = x@start), ...)
+  new("Interval", df$data, start = df$start, tzone = x@tzone)
+}
+
 #' Create an interval object.
 #'
 #' interval creates an \code{\link{Interval-class}} object with the specified start and end 
@@ -402,7 +408,8 @@ int_overlaps <- function(int1, int2){
 #' int_standardize(int)
 #' # 2001-01-01 UTC--2002-01-01 UTC
 int_standardize <- function(int){
-	int[int@.Data < 0] <- int_flip(int[int@.Data < 0])
+  negs <- !is.na(int@.Data) & int@.Data < 0
+  int[negs] <- int_flip(int[negs])
 	int
 }
 
@@ -459,7 +466,7 @@ setMethod("intersect", signature(x = "Interval", y = "Interval"), function(x,y){
 	int1 <- int_standardize(x)
 	int2 <- int_standardize(y)
 	
-	starts <- pmax(int1@start, int2@start)
+  starts <- pmax(int1@start, int2@start)
 	ends <- pmin(int1@start + int1@.Data, int2@start + int2@.Data)
 	spans <- as.numeric(ends) - as.numeric(starts) 
 	
@@ -603,10 +610,10 @@ setMethod("time_length", signature("Interval"), function(x, unit = "second") {
     periods <- as.period(x, unit = unit)
     int_part <- slot(periods, unit)
 
-    prev_aniv <- .month_plus(
+    prev_aniv <- add_with_rollback(
       int_start(x), (int_part * period(1, units = unit)), 
       roll_to_first = TRUE, preserve_hms = FALSE)
-    next_aniv <- .month_plus(
+    next_aniv <- add_with_rollback(
       int_start(x), ((int_part + ifelse(x@.Data < 0, -1, 1)) * period(1, units = unit)), 
       roll_to_first = TRUE, preserve_hms = FALSE)
       

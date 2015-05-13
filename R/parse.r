@@ -376,11 +376,11 @@ hms <- function(..., quiet = FALSE) {
 ##' \item{\code{z}!*}{ISO8601 signed offset in hours and minutes from UTC. For
 ##' example \code{-0800}, \code{-08:00} or \code{-08}, all represent 8 hours
 ##' behind UTC. This format also matches the Z (Zulu) UTC indicator. Because
-##' strptime doesn't fully support ISO8601, lubridate represents this format
-##' internally as an union of 4 different orders: Ou (Z), Oz (-0800), OO
-##' (-08:00) and Oo (-08). You can use this formats as any other but it is
-##' rarely necessary. \code{parse_date_time2} and \code{fast_strptime} support
-##' all of the timezone formats.}
+##' strptime doesn't fully support ISO8601 this format is implemented as an
+##' union of 4 orders: Ou (Z), Oz (-0800), OO (-08:00) and Oo (-08). You can use
+##' these four orders as any other but it is rarely
+##' necessary. \code{parse_date_time2} and \code{fast_strptime} support all of
+##' the timezone formats.}
 ##' 
 ##' \item{\code{r}*}{Matches \code{Ip} and \code{H} orders.}
 ##' \item{\code{R}*}{Matches \code{HM} and\code{IMp} orders.}
@@ -425,6 +425,13 @@ hms <- function(..., quiet = FALSE) {
 ##' @return a vector of POSIXct date-time objects
 ##' @seealso \code{strptime}, \code{\link{ymd}}, \code{\link{ymd_hms}}
 ##' @keywords chron
+##' @note \code{parse_date_time} (and the derivatives \code{ymb}, \code{ymd_hms}
+##' etc) rely on a sparse guesser that takes at most 501 elements from the
+##' supplied character vector in order to identify appropriate formats from the
+##' supplied orders. If you get the error \code{All formats failed to parse} and
+##' you are confident that your vector contains valid dates, you should use
+##' functions that don't perform format guessing (\code{strptime},
+##' \code{fast_strptime} and \code{parse_date_time2}).
 ##' @examples
 ##' x <- c("09-01-01", "09-01-02", "09-01-03")
 ##' parse_date_time(x, "ymd")
@@ -525,7 +532,6 @@ parse_date_time <- function(x, orders, tz = "UTC", truncated = 0, quiet = FALSE,
   out
 }
 
-
 ##' @rdname parse_date_time
 ##' @export parse_date_time2
 parse_date_time2 <- function(x, orders, tz = "UTC"){
@@ -546,6 +552,7 @@ fast_strptime <- function(x, format, tz = "UTC"){
   .POSIXct(.Call("parse_dt", x, format, TRUE), tz = tz)
 }
 
+
 ### INTERNAL
 .parse_date_time <- function(x, formats, tz, quiet){
   ## recursive parsing
@@ -695,7 +702,7 @@ fast_strptime <- function(x, format, tz = "UTC"){
   if (is.numeric(x)) {
     out <- rep.int(as.character(NA), length(x))
     nnas <- !is.na(x)
-    x <- as.character(x[nnas])
+    x <- format(x[nnas], scientific = FALSE, trim = TRUE)
     x <- paste(ifelse(nchar(x) %% 2 == 1, "0", ""), x, sep = "")
     out[nnas] <- x
     out

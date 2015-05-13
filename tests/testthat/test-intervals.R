@@ -8,7 +8,7 @@ test_that("is.interval works as expected",{
     is_false())
   expect_that(is.interval(Sys.Date()), is_false())
   expect_that(is.interval(minutes(1)), is_false())
-  expect_that(is.interval(eminutes(1)), is_false())
+  expect_that(is.interval(dminutes(1)), is_false())
   expect_that(is.interval(new_interval(
     as.POSIXct("2008-08-03 13:01:59", tz = "UTC"), 
     as.POSIXct("2009-08-03 13:01:59", tz = "UTC") )), is_true())
@@ -543,3 +543,15 @@ test_that("summary.Interval creates useful summary", {
   expect_equal(summary(c(int, NA)), text)
 })
    
+test_that("intersect on intervals propagates NAs (#226)", {
+  expect_equal(intersect(c(interval("2014-01-15", "2014-01-16"),
+                           interval("2014-01-15", "2014-01-16")),
+                         c(interval(NA,NA),interval(NA,NA))),
+               c(interval(NA,NA),interval(NA,NA)))
+  expect_equal(intersect(c(interval("2014-01-15", "2014-01-16"),
+                           interval("2014-01-15", "2014-01-16"),
+                           interval("2014-01-01", "2014-01-30")),
+                         c(interval(NA,NA), interval(NA,NA),
+                           interval("2014-01-15", "2014-02-16"))),
+               c(interval(NA,NA),interval(NA,NA), interval("2014-01-15", "2014-01-30")))
+})

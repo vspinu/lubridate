@@ -81,19 +81,19 @@ check_period <- function(object){
 #' \code{\link{Duration-class}} for an alternative way to measure timespans that 
 #' allows precise comparisons between timespans. 
 #' 
-#' The logic that guides arithmetic with periods can be unintuitive. Starting 
-#' with version 1.3.0, lubridate enforces the reversible property of arithmetic 
-#' (e.g. a date + period - period = date)
-#' by returning an NA if you create an implausible date by adding periods with 
-#' months or years units to a date. For example, 
-#' adding one month to January 31st, 2013 results in February 31st, 2013, which 
-#' is not a real date. lubridate users have argued in the past that February 
-#' 31st, 2013 should be rolled over to March 3rd, 2013 or rolled back to February 
-#' 28, 2013. However, each of these corrections would destroy the reversibility 
-#' of addition (Mar 3 - one month == Feb 3 != Jan 31, Feb 28 - one month == Jan 
-#' 28 != Jan 31). If you would like to add and subtract months in a way that rolls 
-#' the results back to the last day of a month (when appropriate) use the special 
-#' operators, \code{\link{\%m+\%}} and \code{\link{\%m-\%}}.
+#' The logic that guides arithmetic with periods can be unintuitive. Starting
+#' with version 1.3.0, lubridate enforces the reversible property of arithmetic
+#' (e.g. a date + period - period = date) by returning an NA if you create an
+#' implausible date by adding periods with months or years units to a date. For
+#' example,  adding one month to January 31st, 2013 results in February 31st,
+#' 2013, which is not a real date. lubridate users have argued in the past that
+#' February 31st, 2013 should be rolled over to March 3rd, 2013 or rolled back
+#' to February 28, 2013. However, each of these corrections would destroy the
+#' reversibility of addition (Mar 3 - one month == Feb 3 != Jan 31, Feb 28 - one
+#' month == Jan 28 != Jan 31). If you would like to add and subtract months in a
+#' way that rolls the results back to the last day of a month (when appropriate)
+#' use the special operators, \code{\link{\%m+\%}},  \code{\link{\%m-\%}} or a
+#' bit more flexible \code{\link{add_with_rollback}}.
 #'
 #' Period class objects have six slots. 1) .Data, a numeric object. The 
 #' apparent amount of seconds to add to the period. 2) minute, a numeric object. 
@@ -241,7 +241,7 @@ setMethod("$", signature(x = "Period"), function(x, name) {
 #' @export
 setMethod("$<-", signature(x = "Period"), function(x, name, value) {
 	if (name == "second") name <- ".Data"
-    slot(x, name) <- value
+    slot(x, name) <- rep_len(value, length(x))
     x
 })
 
@@ -265,9 +265,9 @@ setMethod("$<-", signature(x = "Period"), function(x, name, value) {
 #'
 #' Period objects can be easily created with the helper functions 
 #' \code{\link{years}}, \code{\link{months}}, \code{\link{weeks}}, 
-#' \code{\link{days}}, \code{\link{minutes}}, \code{\link{seconds}}. These objects 
-#' can be added to and subtracted to date-times to create a user interface 
-#' similar to object oriented programming.
+#' \code{\link{days}}, \code{\link{hours}}, \code{\link{minutes}}, 
+#' and \code{\link{seconds}}. These objects can be added to and subtracted 
+#' to date-times to create a user interface similar to object oriented programming.
 #'
 #' new_period is meant to be used interactively on the command line. See 
 #' \code{\link{period}}, for a version that is better suited to automating 
@@ -335,9 +335,9 @@ new_period <- function(...) {
 #'
 #' Period objects can be easily created with the helper functions 
 #' \code{\link{years}}, \code{\link{months}}, \code{\link{weeks}}, 
-#' \code{\link{days}}, \code{\link{minutes}}, \code{\link{seconds}}. These objects 
-#' can be added to and subtracted to date-times to create a user interface 
-#' similar to object oriented programming.
+#' \code{\link{days}}, \code{\link{hours}}, \code{\link{minutes}}, 
+#' and \code{\link{seconds}}. These objects can be added to and subtracted 
+#' to date-times to create a user interface similar to object oriented programming.
 #'
 #' @export
 #' @param num a numeric vector that lists the number of time units to be included in the period
